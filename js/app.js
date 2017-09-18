@@ -7,13 +7,24 @@ $(document).ready(function() {
   var cardHolder = $('.deck');
   var card = $('.card');
   var icons = $('li.card i');
-   var $moves = parseInt($("span").text(0));
+  var $moves = parseInt($("span").text(0));
   var $ratingStars = $('.stars').find('i');
   var match = 0;
+  var seconds = 0;
+
 
 
   function initGame() {
     $ratingStars.removeClass('fa-star-o').addClass('fa-star');
+
+    var outputDiv = document.getElementById('timeCounter');
+    var start = Date.now();
+
+    // determine elapsed time at 5 hundreths of a second intervals
+    var _interval = setInterval(function() {
+      seconds = (Date.now() - start) / 1000;
+      outputDiv.innerHTML = "Time: " + seconds.toFixed();
+    }, 1000);
 
   }
 
@@ -83,7 +94,7 @@ $(document).ready(function() {
       openedCards = [];
       match++;
       if (match === 16) {
-        gameOver();
+        setTimeout(gameOver(), 500);
       }
 
     });
@@ -101,35 +112,42 @@ $(document).ready(function() {
 
   //   //+ increment the move counter and display it on the page (put this functionality in another function that you call from this one)
   function incrementCounter() {
-      move++;
-     var value = parseInt($(".moves").text(), 10) + 1;
-      $(".moves").text(move);
+    move++;
+    var value = parseInt($(".moves").text(), 10) + 1;
+    $(".moves").text(move);
 
   }
 
 
 
   //   //+ if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
-function gameOver(){
-  confirm('You completed the game.\n You made ' + move + 'steps. \n Do you want to play again?');
-  if (false) {
+  function gameOver() {
 
-        alert('Thank You!')
-  } else {
-        location.reload();
+    var rating;
+    $('.deck').hide();
+    if (move > 8 || seconds < 20) {
+      rating = 1;
+
+    } else if (move === 14 || seconds < 40) {
+      rating = 2;
+
+
+    } else if (move > 20 ||seconds < 59) {
+      rating = 3;
+
+    }
+
+    confirm('You completed the game.\n You made ' + move + 'steps. \n in ' + seconds.toFixed()  + ' seconds. \n Your rating is ' + rating + '\n Do you want to play again?')
+
+    if (true) {
+      location.reload();
+      clearInterval(counter);
+
+    } else {
+      alert("Thank you for playing");
+      $('.container').hide();
+    }
   }
-
-  if (move > 8) {
-    $('.stars').find('li i').eq(2).removeClass('fa-star').addClass('fa-star-o');
-  }else if (move === 14) {
-    console.log(  $('.stars').find('i').eq(1));
-    $('.stars').find('li i').eq(1).removeClass('fa-star').addClass('fa-star-o');
-  } else if (move > 20){
-    console.log(  $('.stars').find('i').eq(0));
-    $('.stars').find('li i').eq(0).removeClass('fa-star').addClass('fa-star-o');
-  }
-
-}
 
 
   $('.restart').click(function() {
