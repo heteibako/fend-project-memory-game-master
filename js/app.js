@@ -10,23 +10,37 @@ $(document).ready(function() {
   var $moves = parseInt($("span").text(0));
   var $ratingStars = $('.stars').find('i');
   var match = 0;
-  var seconds = 0;
+  var sec = 0;
 
 
 
   function initGame() {
     $ratingStars.removeClass('fa-star-o').addClass('fa-star');
 
-    var outputDiv = document.getElementById('timeCounter');
-    var start = Date.now();
-
-    // determine elapsed time at 5 hundreths of a second intervals
-    var _interval = setInterval(function() {
-      seconds = (Date.now() - start) / 1000;
-      outputDiv.innerHTML = "Time: " + seconds.toFixed();
-    }, 1000);
-
+    starCounter();
   }
+$('.deck').one('click', function startCounter() {
+
+  function pad(val) {
+    return val > 9 ? val : "0" + val;
+  }
+  setInterval(function() {
+    $("#seconds").html(pad(++sec % 60));
+    $("#minutes").html(pad(parseInt(sec / 60, 10)+ ' :'));
+  }, 1000);
+  return sec
+
+});
+
+
+  function stopCounter() {
+    clearInterval(function() {
+      $("#seconds").html(pad(++sec % 60));
+      $("#minutes").html(pad(parseInt(sec / 60, 10)+ ' :'));
+    }, 1000);
+    return sec;
+  }
+
 
   //
   // Display the cards on the page
@@ -58,6 +72,8 @@ $(document).ready(function() {
 
   //  set up the event listener for a card. If a card is clicked:
   $('.card').on('click', cardClick);
+
+
   var openedCards = [];
   //- add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
   function cardClick(e) {
@@ -94,7 +110,7 @@ $(document).ready(function() {
       openedCards = [];
       match++;
       if (match === 16) {
-        setTimeout(gameOver(), 500);
+        setTimeout(gameOver(), 1000);
       }
 
     });
@@ -107,16 +123,36 @@ $(document).ready(function() {
     $('.card').removeClass('open show');
     //console.log("Not matching");
     incrementCounter();
-
   }
 
   //   //+ increment the move counter and display it on the page (put this functionality in another function that you call from this one)
   function incrementCounter() {
     move++;
-    var value = parseInt($(".moves").text(), 10) + 1;
+    // var value = parseInt($(".moves").text(), 10) + 1;
     $(".moves").text(move);
-
+    starCounter(move);
   }
+
+
+  function starCounter(move) {
+    if (move > 8) {
+      $('.stars').find('i').eq(2).removeClass('fa-star').addClass('fa-star-o');
+
+    }
+
+    if (move > 14) {
+      $('.stars').find('i').eq(1).removeClass('fa-star').addClass('fa-star-o');
+
+
+    }
+
+    if (move > 20) {
+      $('.stars').find('i').eq(0).removeClass('fa-star').addClass('fa-star-o');
+
+    }
+  }
+
+
 
 
 
@@ -125,19 +161,19 @@ $(document).ready(function() {
 
     var rating;
     $('.deck').hide();
-    if (move > 8 || seconds < 20) {
+    if (move > 8 || seconds < 25) {
       rating = 1;
 
-    } else if (move === 14 || seconds < 40) {
+    } else if (move > 14 || seconds < 50) {
       rating = 2;
 
 
-    } else if (move > 20 ||seconds < 59) {
+    } else if (move > 20 || seconds < 100) {
       rating = 3;
 
     }
 
-    confirm('You completed the game.\n You made ' + move + 'steps. \n in ' + seconds.toFixed()  + ' seconds. \n Your rating is ' + rating + '\n Do you want to play again?')
+    confirm('You completed the game.\n You won thw game with  ' + move + 'steps. \n in ' + sec.toFixed() + ' seconds. \n Your rating is ' + rating + '\n Do you want to play again?')
 
     if (true) {
       location.reload();
@@ -147,6 +183,8 @@ $(document).ready(function() {
       alert("Thank you for playing");
       $('.container').hide();
     }
+
+    stopCounter();
   }
 
 
