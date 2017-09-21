@@ -114,6 +114,7 @@ $('.deck').one('click', function startCounter() {
       }
 
     });
+    incrementCounter();
   }
 
   //   //+ if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
@@ -135,19 +136,14 @@ $('.deck').one('click', function startCounter() {
 
 
   function starCounter(move) {
-    if (move > 8) {
+    if (move > 20) {
       $('.stars').find('i').eq(2).removeClass('fa-star').addClass('fa-star-o');
 
     }
 
-    if (move > 14) {
+    if (move > 20) {
       $('.stars').find('i').eq(1).removeClass('fa-star').addClass('fa-star-o');
 
-
-    }
-
-    if (move > 20) {
-      $('.stars').find('i').eq(0).removeClass('fa-star').addClass('fa-star-o');
 
     }
   }
