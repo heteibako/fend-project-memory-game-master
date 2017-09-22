@@ -19,24 +19,24 @@ $(document).ready(function() {
 
     starCounter();
   }
-$('.deck').one('click', function startCounter() {
+  $('.deck').one('click', function startCounter() {
 
-  function pad(val) {
-    return val > 9 ? val : "0" + val;
-  }
-  setInterval(function() {
-    $("#seconds").html(pad(++sec % 60));
-    $("#minutes").html(pad(parseInt(sec / 60, 10)+ ' :'));
-  }, 1000);
-  return sec
+    function pad(val) {
+      return val > 9 ? val : "0" + val;
+    }
+    setInterval(function() {
+      $("#seconds").html(pad(++sec % 60));
+      $("#minutes").html(pad(parseInt(sec / 60, 10) + ' :'));
+    }, 1000);
+    return sec
 
-});
+  });
 
 
   function stopCounter() {
     clearInterval(function() {
       $("#seconds").html(pad(++sec % 60));
-      $("#minutes").html(pad(parseInt(sec / 60, 10)+ ' :'));
+      $("#minutes").html(pad(parseInt(sec / 60, 10) + ' :'));
     }, 1000);
     return sec;
   }
@@ -75,8 +75,12 @@ $('.deck').one('click', function startCounter() {
 
 
   var openedCards = [];
+
   //- add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
   function cardClick(e) {
+    if ($(this).hasClass('open')) {
+      return;
+    }
     e.preventDefault();
     var target = e.currentTarget;
     $(e.target).addClass('open show');
