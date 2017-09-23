@@ -97,14 +97,11 @@ $(document).ready(function() {
       if (array.length > 1 && (item1.lastChild.classList.value === item2.lastChild.classList.value)) {
         ifCardsMatch();
       } else {
-
         setTimeout(ifCardsDontMatch, 500);
         return false;
       }
     }
   }
-
-
 
   //   //+ if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
 
@@ -113,11 +110,11 @@ $(document).ready(function() {
       items.className += ' match';
       openedCards = [];
       match++;
-      if (match === 16) {
-        setTimeout(gameOver(), 1000);
-      }
-
     });
+
+    if (match === 16) {
+      setTimeout(gameOver, 1000);
+    }
     incrementCounter();
   }
 
@@ -140,20 +137,15 @@ $(document).ready(function() {
 
 
   function starCounter(move) {
-    if (move > 20) {
+    if (move > 8) {
       $('.stars').find('i').eq(2).removeClass('fa-star').addClass('fa-star-o');
 
     }
 
-    if (move > 20) {
+    if (move > 15) {
       $('.stars').find('i').eq(1).removeClass('fa-star').addClass('fa-star-o');
-
-
     }
   }
-
-
-
 
 
   //   //+ if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
@@ -164,17 +156,17 @@ $(document).ready(function() {
     if (move > 8 || seconds < 25) {
       rating = 1;
 
-    } else if (move > 14 || seconds < 50) {
+    }
+    if (move > 15 || seconds < 50) {
       rating = 2;
 
 
-    } else if (move > 20 || seconds < 100) {
+    }
+    if (move > 20 || seconds < 100) {
       rating = 3;
 
     }
-
-    confirm('You completed the game.\n You won thw game with  ' + move + 'steps. \n in ' + sec.toFixed() + ' seconds. \n Your rating is ' + rating + '\n Do you want to play again?')
-
+    confirm('You completed the game.\n You won the game with  ' + move + 'steps. \n in ' + sec.toFixed() + ' seconds. \n Your rating is ' + rating + '\n Do you want to play again?');
     if (true) {
       location.reload();
       clearInterval(counter);
