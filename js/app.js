@@ -1,46 +1,57 @@
-$(document).ready(function() {
+$(document).ready(function () {
   //* Create a list that holds all of your cards
   // */
 
   var move = 0;
-  var symbols = ['diamond', 'diamond', 'plane', 'plane', 'anchor', 'anchor', 'bolt', 'bolt', 'cube', 'cube', 'leaf', 'leaf', 'bicycle', 'bicycle', 'bomb', 'bomb'];
+  var symbols = [
+    'diamond',
+    'diamond',
+    'plane',
+    'plane',
+    'anchor',
+    'anchor',
+    'bolt',
+    'bolt',
+    'cube',
+    'cube',
+    'leaf',
+    'leaf',
+    'bicycle',
+    'bicycle',
+    'bomb',
+    'bomb',
+  ];
   var cardHolder = $('.deck');
   var card = $('.card');
   var icons = $('li.card i');
-  var $moves = parseInt($("span").text(0));
+  var $moves = parseInt($('span').text(0));
   var $ratingStars = $('.stars').find('i');
   var match = 0;
   var sec = 0;
 
-
-
   function initGame() {
     $ratingStars.removeClass('fa-star-o').addClass('fa-star');
 
-    starCounter();
+    startCounter();
   }
   $('.deck').one('click', function startCounter() {
-
     function pad(val) {
-      return val > 9 ? val : "0" + val;
+      return val > 9 ? val : '0' + val;
     }
-    setInterval(function() {
-      $("#seconds").html(pad(++sec % 60));
-      $("#minutes").html(pad(parseInt(sec / 60, 10) + ' :'));
+    setInterval(function () {
+      $('#seconds').html(pad(++sec % 60));
+      $('#minutes').html(pad(parseInt(sec / 60, 10) + ' :'));
     }, 1000);
-    return sec
-
+    return sec;
   });
 
-
   function stopCounter() {
-    clearInterval(function() {
-      $("#seconds").html(pad(++sec % 60));
-      $("#minutes").html(pad(parseInt(sec / 60, 10) + ' :'));
+    clearInterval(function () {
+      $('#seconds').html(pad(++sec % 60));
+      $('#minutes').html(pad(parseInt(sec / 60, 10) + ' :'));
     }, 1000);
     return sec;
   }
-
 
   //
   // Display the cards on the page
@@ -56,7 +67,8 @@ $(document).ready(function() {
   // Shuffle function from http://stackoverflow.com/a/2450976
   function shuffle(array) {
     var currentIndex = array.length,
-      temporaryValue, randomIndex;
+      temporaryValue,
+      randomIndex;
 
     while (currentIndex !== 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
@@ -68,11 +80,8 @@ $(document).ready(function() {
     return array;
   }
 
-
-
   //  set up the event listener for a card. If a card is clicked:
   $('.card').on('click', cardClick);
-
 
   var openedCards = [];
 
@@ -94,7 +103,7 @@ $(document).ready(function() {
     for (var i = 1; i < array.length; i++) {
       var item1 = array[0];
       var item2 = array[1];
-      if (array.length > 1 && (item1.lastChild.classList.value === item2.lastChild.classList.value)) {
+      if (array.length > 1 && item1.lastChild.classList.value === item2.lastChild.classList.value) {
         ifCardsMatch();
       } else {
         setTimeout(ifCardsDontMatch, 500);
@@ -106,7 +115,7 @@ $(document).ready(function() {
   //   //+ if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
 
   function ifCardsMatch() {
-    openedCards.forEach(function(items) {
+    openedCards.forEach(function (items) {
       items.className += ' match';
       openedCards = [];
       match++;
@@ -131,15 +140,13 @@ $(document).ready(function() {
   function incrementCounter() {
     move++;
     // var value = parseInt($(".moves").text(), 10) + 1;
-    $(".moves").text(move);
-    starCounter(move);
+    $('.moves').text(move);
+    startCounter(move);
   }
 
-
-  function starCounter(move) {
+  function startCounter(move) {
     if (move > 8) {
       $('.stars').find('i').eq(2).removeClass('fa-star').addClass('fa-star-o');
-
     }
 
     if (move > 15) {
@@ -147,43 +154,36 @@ $(document).ready(function() {
     }
   }
 
-
   //   //+ if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
   function gameOver() {
-
     var rating;
     $('.deck').hide();
     if (move > 8 || seconds < 25) {
       rating = 1;
-
     }
     if (move > 15 || seconds < 50) {
       rating = 2;
-
-
     }
     if (move > 20 || seconds < 100) {
       rating = 3;
-
     }
-    confirm('You completed the game.\n You won the game with  ' + move + 'steps. \n in ' + sec.toFixed() + ' seconds. \n Your rating is ' + rating + '\n Do you want to play again?');
+    confirm(
+      `You completed the game.\n You won the game with ${move} steps. \n in ${sec.toFixed()} seconds. \n Your rating is ${rating} \n Do you want to play again?`
+    );
     if (true) {
       location.reload();
       clearInterval(counter);
-
     } else {
-      alert("Thank you for playing");
+      alert('Thank you for playing');
       $('.container').hide();
     }
 
     stopCounter();
   }
 
-
-  $('.restart').click(function() {
+  $('.restart').click(function () {
     location.reload();
   });
 
   initGame();
-
 });
